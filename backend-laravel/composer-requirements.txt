@@ -1,0 +1,5 @@
+# Create a clean Laravel 12 project first:
+# composer create-project laravel/laravel:^12.0 talviro-api
+# cd talviro-api
+# composer require laravel/sanctum
+# This directory supplies app-specific files; it is not the Laravel framework/vendor tree.

@@ -1,0 +1,12 @@
+.env
+vendor/
+storage/
+*.log
+google-services.json
+*.jks
+*.keystore
+local.properties
+.idea/
+.gradle/
+build/
+app/build/

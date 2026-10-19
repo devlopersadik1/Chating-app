@@ -1,38 +1,27 @@
-# Talviro Chat — Android + PHP/MySQL starter
+# Talviro Chat — Android + Laravel/PHP/MySQL starter
 
-Stack: Android Java/XML, PHP 8+, MySQL, Firebase Cloud Messaging (FCM), with WebRTC architecture planned for calls.
+Android source is maintained here so GitHub Actions can build APK artifacts. The PHP backend is deployed separately to cPanel.
 
-**Important:** this is a starter project, not a finished Messenger clone. Login verification, fully working real-time messaging, media delivery, FCM sending, WebRTC calls, group-call media infrastructure, and end-to-end encryption still require implementation and end-to-end testing. Do not deploy it as a public production service yet.
-
-## Repository layout
-- `android-app/` — Android Java/XML source
-- `backend-php/` — PHP backend foundation
-- `backend-php/admin-panel/` — owner/admin console foundation
-- `database/schema.sql` — core MySQL schema
-- `database/migrations/001_admin_control_panel.sql` — admin roles, audit log and settings schema
+## Source folders
+- `android-app/` — Android Java/XML starter
+- `backend-laravel/` — Laravel 12 app-specific API files to merge into a clean Laravel project (PHP 8.2+)
+- `backend-php/` — earlier PHP backend/admin foundation; do not deploy both backends to the same API URL
+- `backend-php/admin-panel/` — earlier standalone admin-panel foundation
+- `database/schema.sql` — earlier backend schema
+- `database/migrations/001_admin_control_panel.sql` — earlier admin schema migration
 - `.github/workflows/build-apk.yml` — GitHub Actions debug APK build
-- `docs/FIREBASE_SETUP.md` — Firebase setup
-- `docs/WEBRTC.md` — call architecture
-- `docs/SECURITY.md` — security checklist
 
-## Build APK
-1. Open the repository's **Actions** tab.
-2. Select **Build Talviro Chat APK** and run the workflow, or push a change under `android-app/`.
-3. When the run succeeds, open the run and download the `talviro-chat-debug-apk` artifact.
+## Build Android APK
+1. Open **Actions**.
+2. Run **Build Talviro Chat APK** or push a change under `android-app/`.
+3. Download the `talviro-chat-debug-apk` artifact after a successful run.
 
-This workflow produces a debug APK only. A release APK needs a securely managed signing key; never commit keystores or passwords.
+The workflow builds a debug APK only. Release signing requires a securely managed keystore. Never commit keystore/passwords, Firebase private keys, or production .env files.
 
-## cPanel setup outline
-1. Back up your database and import `database/schema.sql`.
-2. Import `database/migrations/001_admin_control_panel.sql` into the same database.
-3. Deploy PHP files to your hosting account. Keep secrets, service-account credentials and uploads outside the public web root wherever possible.
-4. Install PHP dependencies with Composer if required by the backend.
-5. Configure the database, a strong audit hash key and Firebase credentials using your host's protected configuration method.
-6. Follow `backend-php/admin-panel/README.md` for creating the first owner account. The owner setup script is CLI-only and must be deleted after first use.
-7. Configure the HTTPS API URL in the Android source before building an APK.
+## Laravel API setup
+Read `backend-laravel/README.md` and `backend-laravel/docs/SECURITY-RELEASE-CHECKLIST.md`. Create a clean Laravel 12 project with Composer, install Sanctum, merge the app-specific files and update the default User model as documented. Configure the cPanel MySQL database, run migrations and point the domain document root to Laravel's `public/` directory.
 
-## Owner/admin console
-The initial admin foundation supports separate owner/admin/moderator roles, owner-only admin account creation/disable, password hashing, CSRF tokens, prepared SQL, basic login throttling, session hardening and audit events. It does **not** yet implement all moderation or app-wide controls (reports, user bans, broadcast notifications, feature toggles). Those need to be built and tested before production.
+## Status and important limitations
+This repository is still under development and is **not** a complete or production-certified Messenger clone. The Laravel files currently provide a foundation for email/password authentication, profile lookup, conversation membership, and text messages. Phone OTP, FCM delivery, media uploads, message receipt states, stories, moderation workflows, WebRTC signaling, TURN/SFU group calls, E2EE and full Android integration are not yet fully implemented and tested.
 
-## Security warning
-Do not deploy before implementing authenticated API requests and authorization checks for every conversation/message/media operation. HTTPS is not end-to-end encryption. Keep real `.env`, Firebase service-account JSON, database passwords and signing keys out of GitHub. Calls need a signaling service and STUN/TURN; scalable group calls generally need an SFU such as LiveKit.
+Before public launch, implement and test API authorization, rate limits, account recovery/deletion, upload validation, logging/monitoring, backups and privacy workflows. HTTPS alone is not end-to-end encryption. Keep secrets out of GitHub.

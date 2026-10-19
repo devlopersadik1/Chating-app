@@ -8,14 +8,16 @@ Stack: Android Java/XML, PHP 8+, MySQL, Firebase Cloud Messaging (FCM).
 - `android-app/` — Android Java/XML starter project
 - `backend-php/` — PHP API foundation
 - `database/schema.sql` — MySQL schema
-- `docs/` — WebRTC and security setup notes
+- `docs/FIREBASE_SETUP.md` — Firebase project, FCM, backend, and calling setup
+- `docs/WEBRTC.md` — WebRTC and group calling architecture
+- `docs/SECURITY.md` — security checklist
 
 ## Setup
-1. Import `database/schema.sql` into MySQL.
-2. Copy `backend-php/.env.example` to `.env` and set DB values.
-3. Run `composer install` inside `backend-php/`.
-4. Configure Firebase service-account JSON outside the public web root; never commit it.
-5. Add your Firebase `google-services.json` to `android-app/app/` locally (do not commit secrets).
-6. Set the HTTPS API URL in `ApiConfig.java`.
+1. Follow [Firebase setup](docs/FIREBASE_SETUP.md) to create a Firebase project and add `google-services.json` locally.
+2. Import `database/schema.sql` into MySQL.
+3. Copy `backend-php/.env.example` to `.env` on your server and set DB values.
+4. Run `composer install` inside `backend-php/`.
+5. Configure Firebase service-account JSON outside the public web root; never commit it.
+6. Set the HTTPS API URL in `android-app/app/src/main/java/com/example/messenger/ApiConfig.java`.
 
-Do not deploy before implementing authentication and conversation membership checks. Calls require a real signaling service plus STUN/TURN; they are not implemented yet.
+Do not deploy before implementing authentication and conversation membership checks. Calls require a real signaling service plus STUN/TURN (and an SFU such as LiveKit for scalable group calls); they are not implemented yet.

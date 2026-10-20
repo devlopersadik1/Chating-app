@@ -1,6 +1,8 @@
 Merge these traits/fields into the default Laravel App\Models\User model (do not blindly overwrite your existing model):
 
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\DeviceToken;
 
 Add HasApiTokens to the existing model's traits, for example:
 use HasApiTokens, HasFactory, Notifiable;
@@ -8,3 +10,9 @@ use HasApiTokens, HasFactory, Notifiable;
 Add username, avatar_url, is_online, is_banned to $fillable, or define guarded/casts appropriately.
 Cast is_online and is_banned to boolean.
 Keep password and remember_token hidden.
+
+Add this relationship inside User:
+public function deviceTokens(): HasMany
+{
+    return $this->hasMany(DeviceToken::class);
+}

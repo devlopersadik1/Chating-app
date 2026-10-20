@@ -1,4 +1,4 @@
-package com.example.messenger;
+package com.talviro.chat;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;

@@ -36,6 +36,30 @@ class MessageController extends Controller
             'type' => 'text',
             'sent_at' => now(),
         ]);
+
+        // Push delivery is best-effort: an FCM outage must not lose a saved chat message.
+        try {
+            $recipients = $conversation->members()
+                ->where('users.id', '!=', $request->user()->id)
+                ->with('deviceTokens')
+                ->get();
+            $senderName = $request->user()->name ?: 'New message';
+            foreach ($recipients as $recipient) {
+                foreach ($recipient->deviceTokens as $device) {
+                    app(FcmService::class)->sendChatMessage(
+                        $device->token,
+                        $senderName,
+                        trim($data['body']),
+                        (int) $conversation->id,
+                        (int) $message->id
+                    );
+                }
+            }
+        } catch (\\Throwable $e) {
+            // Keep the message persisted even if notification delivery fails.
+            report($e);
+        }
+
         return response()->json(['data' => $message->load('sender:id,name,username,avatar_url')], 201);
     }
 

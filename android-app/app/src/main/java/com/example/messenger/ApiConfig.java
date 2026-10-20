@@ -1,4 +1,4 @@
-package com.example.messenger;
+package com.talviro.chat;
 
 /**
  * Public API endpoint configuration only.
@@ -7,11 +7,7 @@ package com.example.messenger;
  */
 public final class ApiConfig {
     private ApiConfig() {}
-
     // Replace with the HTTPS URL of your deployed Laravel API.
-    // Example: https://api.your-domain.tld/
     public static final String API_BASE_URL = "https://api.example.com/";
-
-    // Laravel routes in backend-laravel/routes/api.php use the v1 prefix.
     public static final String API_V1_URL = API_BASE_URL + "api/v1/";
 }

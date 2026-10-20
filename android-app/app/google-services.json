@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1077219833521",
+    "project_id": "talviro-chat",
+    "storage_bucket": "talviro-chat.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077219833521:android:e8dbc7edd6f0355d2c9490",
+        "android_client_info": {
+          "package_name": "com.talviro.chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQEg7Rahz_WGLtH8EtJ-ZXohajryjbyiw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
